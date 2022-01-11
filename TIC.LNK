@@ -21,7 +21,6 @@ file pcfx.obj
 
 file i_cyber.obj
 file i_ibm.obj
-file i_ibm_a.obj
 file i_sound.obj
 
 file am_map.obj

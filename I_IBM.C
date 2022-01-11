@@ -710,14 +710,13 @@ boolean grmode;
 
 //==================================================
 //
-// joystick vars
+// joystick vars (dummies)
 //
 //==================================================
 
-boolean         joystickpresent;
-extern  unsigned        joystickx, joysticky;
-boolean I_ReadJoystick (void);          // returns false if not connected
-
+boolean         joystickpresent = false;
+unsigned        joystickx, joysticky = 0;
+boolean         I_ReadJoystick (void) {return false;}
 
 //==================================================
 
@@ -1602,10 +1601,7 @@ void I_JoystickEvents (void)
 
 dpmiregs_t      dpmiregs;
 
-unsigned                realstackseg;
-
-void I_DivException (void);
-int I_SetDivException (void);
+unsigned        realstackseg;
 
 void DPMIFarCall (void)
 {
@@ -1652,36 +1648,6 @@ void I_StartupDPMI (void)
 // allocate a decent stack for real mode ISRs
 //
 	realstackseg = (int)I_AllocLow (1024) >> 4;
-
-//
-// lock the entire program down
-//
-
-//      _dpmi_lockregion (&__begtext, &___argc - &__begtext);
-
-
-//
-// catch divide by 0 exception
-//
-#if 0
-	segread(&segregs);
-	regs.w.ax = 0x0203;             // DPMI set processor exception handler vector
-	regs.w.bx = 0;                  // int 0
-	regs.w.cx = segregs.cs;
-	regs.x.edx = (int)&I_DivException;
- printf ("%x : %x\n",regs.w.cx, regs.x.edx);
-	int386( DPMI_INT, &regs, &regs);
-#endif
-
-#if 0
-	n = I_SetDivException ();
-	printf ("return: %i\n",n);
-	n = 100;
-	d = 0;
-   printf ("100 / 0 = %i\n",n/d);
-
-exit (1);
-#endif
 }
 
 
